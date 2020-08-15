@@ -1,0 +1,43 @@
+# DeploymentConfig for starting up the random-generator
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: random-generator
+  template:
+    metadata:
+      labels:
+        app: random-generator
+    spec:
+      containers:
+      - image: alyragab/random
+        imagePullPolicy: Always
+        name: random-generator
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          # Initial resource request for CPU and memory
+          requests:
+            cpu: 60m
+            memory: 60Mi
+          # Upper limit until we want our application to grow at max
+          limits:
+            cpu: 100m
+            memory: 100Mi
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: random-generator
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+  selector:
+   app: random-generator
