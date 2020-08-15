@@ -28,12 +28,12 @@ patch=$(cat <<EOT
   {
     "op": "replace",
     "path": "/spec/template/spec/containers/0/resources/requests/memory",
-    "value": "30Mi"
+    "value": "300Mi"
   },
   {
     "op": "replace",
     "path": "/spec/template/spec/containers/0/resources/limits/memory",
-    "value": "30Mi"
+    "value": "300Mi"
   }
 ]
 EOT
