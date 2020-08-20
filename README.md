@@ -1,5 +1,5 @@
 # k8a-pattern
-Generating a Random Numbers API and check its compute Predictable Compute Usage
+Generating a Random Numbers API and check its Predictable Compute Usage
 
 ### Usage:
 ```
