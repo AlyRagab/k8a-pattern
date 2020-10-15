@@ -1,4 +1,4 @@
-# k8a-pattern
+# k8s-Prediactable Demand Pattern
 Generating a Random Numbers API and check its Predictable Compute Usage
 
 ### Usage:
