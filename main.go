@@ -7,13 +7,18 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
 func main() {
-
 	r := mux.NewRouter()
 	r.HandleFunc("/", httpRequest)
+	r.HandleFunc("/metrics", metrics).Handler(promhttp.Handler())
+	//r.Path("/metrics").HandlerFunc(metrics).Handler(promhttp.Handler())
 	go http.ListenAndServe(":8080", r)
 	printUsage()
 }
@@ -32,7 +37,7 @@ func printUsage() {
 		fmt.Printf("Processors \t\t= %v\n", runtime.NumCPU())
 
 		fmt.Printf("=======\n")
-		time.Sleep(2 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
@@ -52,4 +57,16 @@ func httpRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Generated Number is : %v\n", gen)
 	fmt.Fprintf(w, "Pattern : Predictable Demands\n")
 	//w.Write([]byte(fmt.Sprintf("Generated Number is : %f", gen)))
+}
+
+func metrics(w http.ResponseWriter, r *http.Request) {
+	// Counting the numer of request made in this API
+	if r.URL.Path == "/metrics" {
+		requestCounter := promauto.NewCounter(prometheus.CounterOpts{
+			Name: "requests_counter",
+			Help: "The Number of http request made against this API.",
+		})
+		requestCounter.Inc()
+		fmt.Fprint(w, requestCounter)
+	}
 }
