@@ -40,3 +40,9 @@ EOT
 )
 kubectl patch deploy random-generator --type=json -p $patch
 ```
+## Getting the Prometheus Metrics:
+- Run the Prometheus Container described at the prometheus dir here
+- Run the main.go `go run main.go`
+- Log into prometheus UI `http://localhost:9090`
+- Write this Query `promhttp_metric_handler_requests_total{job="golang_app"}`
+- To get it from the API itself you can `http://localhost:8080/metrics` and look at `promhttp_metric_handler_requests_total`
